@@ -20,7 +20,7 @@ var capsConfig = {
     'os_version' : '7',
     'resolution' : '1024x768'
   }
-}
+};
 
 var selectedCaps = process.env.SELECTED_CAPS || undefined;
 var caps = selectedCaps ? capsConfig[selectedCaps] : undefined;
@@ -46,38 +46,67 @@ describe('Visual monitor testing', function() {
   it('should show the home page',function(done) {
     client
       .url(baseUrl)
+      // Remove the not shipped notice.
+      .setCookie({name: 'notShippedNotice', value: 'yes'})
+      // 18+ button.
+      .click('.gsBtnRow .col-over18 a.btn-green')
       .webdrivercss(testName + '.homepage', {
-        name: 'homepage',
+        name: '1',
         exclude:
           [
-            // News block.
-            '#tab-news',
-            // Community stats.
-            '#community-stats .highlight',
-            // Who uses Drupal.
-            '#sites-with-drupal img'
+            // The E-Cig Spotlight Blog.
+            '.text-center img',
           ],
         remove:
           [
-            // Who uses Drupal text
-            '#sites-with-drupal p a'
+            // The E-Cig Spotlight Blog.
+            '.text-center .caption',
+            // Need a help.
+            '.fr_24557_59732',
+            // Leave a feedback.
+            '#qb-pfb-trigger',
+            // Live chat.
+            '.gs-chat',
           ],
-        screenWidth: selectedCaps == 'chrome' ? [320, 640, 960, 1200] : undefined,
+        screenWidth: selectedCaps == 'chrome' ? [320, 640, 960, 1200] : undefined
       }, shoovWebdrivercss.processResults)
       .call(done);
   });
 
-  it('should show start page',function(done) {
+  it('should show the starter kits page',function(done) {
     client
-      .url(baseUrl + '/start')
-      .webdrivercss(testName + '.start', {
-        name: 'start',
+      .url(baseUrl + '/electronic-cigarette-starter-kits/')
+      // Wait for Need a help panel.
+      .pause(2000)
+      .webdrivercss(testName + '.starter-kits', {
+        name: '1',
         exclude:
           [
-            '.narrow-box ul.flat',
-            '.get-started.documentation img'
+            // Product img.
+            '.cat-item img',
+            // Product info.
+            '.cat-item-title',
+            '.cat-item-blurb',
+            '.cat-item-price',
+            '.cat-item-msrp',
+            // compare chart table.
+            '.compare_chart .cat-item-price',
           ],
-        screenWidth: selectedCaps == 'chrome' ? [320, 640, 960, 1200] : undefined,
+        remove:
+          [
+            // 10% off link.
+            '.bcx_outer',
+            // Item rating.
+            '.yotpo-stars',
+            '.text-m',
+            // Leave a feedback.
+            '#qb-pfb-trigger',
+            // Live chat.
+            'div.gs-chat',
+            // Text from comparison Chart table.
+            'ul.clearfix li',
+          ],
+        screenWidth: selectedCaps == 'chrome' ? [320, 640, 960, 1200] : undefined
       }, shoovWebdrivercss.processResults)
       .call(done);
   });
