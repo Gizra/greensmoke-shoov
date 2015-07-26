@@ -8,7 +8,5 @@ Feature: Add to cart
   Scenario: Add to cart product
     Given I am an anonymous user
     When  I visit "electronic-cigarette-starter-kits"
-    And   I accept I am 18
-    And   I agree not shipped
     And   I add to cart
     Then  I should see the item added to the cart

@@ -12,26 +12,22 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @Given I am an anonymous user
    */
   public function iAmAnAnonymousUser() {
-    // Just let this pass-through.
-  }
-
-  /**
-   * @When I accept I am 18
-   */
-  public function iAcceptIAm()
-  {
-    $element = $this->getSession()->getPage()->find('xpath', '//*[@id="is_18"]/div/div/div/div[4]/div[2]/a');
-    $element->click();
-//    $element = $this->getSession()->getPage()->find('xpath', '//*[@id="bcx_close_104614_overlay"]');
+    // Set cookies.
+    $this->getSession()->visit($this->locatePath('/'));
+    $this->getSession()->setcookie('notShippedNotice', 'yes');
+    $this->getSession()->setcookie('is_18', 'yes');
   }
 
   /**
    * @When I add to cart
    */
   public function iAddToCart() {
+    // $this->getSession()->evaluateScript('addToBasket(7, false);');
 
     // Add to cart.
-    $element = $this->getSession()->getPage()->find('xpath', '//*[@id="prod7"]/a');
+    $this->iWaitForCssElement('#prod15 a');
+
+    $element = $this->getSession()->getPage()->find('css', '#prod15 a');
     $element->click();
   }
 
@@ -39,9 +35,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @Then I should see the item added to the cart
    */
   public function iShouldSeeTheItemAddedToTheCart() {
+    $this->iWaitForCssElement('.cartProds');
     $this->waitFor(function($context) {
       try {
-        $element = $context->getSession()->getPage()->find('css', '#basketlabel');
+        $element = $context->getSession()->getPage()->find('css', '.cartProds');
         return $element->getText() == '1';
       }
       catch (WebDriver\Exception $e) {
@@ -79,7 +76,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    *
    * @throws Exception
    */
-  private function waitFor($fn, $timeout = 10000) {
+  private function waitFor($fn, $timeout = 15000) {
     $start = microtime(true);
     $end = $start + $timeout / 1000.0;
     while (microtime(true) < $end) {
