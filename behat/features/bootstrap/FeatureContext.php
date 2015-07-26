@@ -16,6 +16,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $this->getSession()->visit($this->locatePath('/'));
     $this->getSession()->setcookie('notShippedNotice', 'yes');
     $this->getSession()->setcookie('is_18', 'yes');
+
+    $this->getSession()->setcookie('country_code', 'US');
   }
 
   /**
@@ -33,10 +35,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @Then I should see the item added to the cart
    */
   public function iShouldSeeTheItemAddedToTheCart() {
-    $this->iWaitForCssElement('.cartProds');
+    $this->iWaitForCssElement('.nn-cart-cont');
     $this->waitFor(function($context) {
       try {
-        $element = $context->getSession()->getPage()->find('css', '.cartProds');
+        $element = $context->getSession()->getPage()->find('css', '.nn-cart-cont');
         return $element->getText() == '1';
       }
       catch (WebDriver\Exception $e) {
