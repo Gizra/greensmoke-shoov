@@ -22,12 +22,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @When I add to cart
    */
   public function iAddToCart() {
-    // $this->getSession()->evaluateScript('addToBasket(7, false);');
-
     // Add to cart.
-    $this->iWaitForCssElement('#prod15 a');
+    $this->iWaitForCssElement('.cat-item-buy-now');
 
-    $element = $this->getSession()->getPage()->find('css', '#prod15 a');
+    $element = $this->getSession()->getPage()->find('css', '.cat-item-buy-now a');
     $element->click();
   }
 
