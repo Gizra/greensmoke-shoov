@@ -46,7 +46,7 @@ describe('Visual monitor testing', function() {
   it('should show the home page',function(done) {
     client
       .url(baseUrl)
-      // Remove the not shipped notice
+      // Remove the not shipped notice.
       .setCookie({name: 'notShippedNotice', value: 'yes'})
       // 18+ button.
       .click('.gsBtnRow .col-over18 a.btn-green')
@@ -61,7 +61,7 @@ describe('Visual monitor testing', function() {
           [
             // The E-Cig Spotlight Blog.
             '.text-center .caption',
-            // Need a help
+            // Need a help.
             '.fr_24557_59732',
             // Leave a feedback.
             '#qb-pfb-trigger',
