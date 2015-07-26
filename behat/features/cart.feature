@@ -7,6 +7,6 @@ Feature: Add to cart
   @javascript
   Scenario: Add to cart product
     Given I am an anonymous user
-    When  I visit "electronic-cigarette-starter-kits"
+    When  I visit "electronic-cigarette-starter-kits/pro-kit.html"
     And   I add to cart
     Then  I should see the item added to the cart

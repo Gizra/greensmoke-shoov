@@ -25,9 +25,9 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    */
   public function iAddToCart() {
     // Add to cart.
-    $this->iWaitForCssElement('.cat-item-buy-now');
+    $this->iWaitForCssElement('#DesktopBuyNowButtonProdPage');
 
-    $element = $this->getSession()->getPage()->find('css', '.cat-item-buy-now a');
+    $element = $this->getSession()->getPage()->find('css', '#DesktopBuyNowButtonProdPage');
     $element->click();
   }
 
@@ -35,19 +35,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @Then I should see the item added to the cart
    */
   public function iShouldSeeTheItemAddedToTheCart() {
-    $this->iWaitForCssElement('.nn-cart-cont');
-    $this->waitFor(function($context) {
-      try {
-        $element = $context->getSession()->getPage()->find('css', '.nn-cart-cont');
-        return $element->getText() == '1';
-      }
-      catch (WebDriver\Exception $e) {
-        if ($e->getCode() == WebDriver\Exception::NO_SUCH_ELEMENT) {
-          return FALSE;
-        }
-        throw $e;
-      }
-    });
+    $this->getSession()->visit($this->locatePath('/catalog/index.php?_g=co&_a=cart'));
+
+    // Find the checkout button.
+    $this->iWaitForCssElement('#sc_ready_button_footer');
   }
 
   /**
